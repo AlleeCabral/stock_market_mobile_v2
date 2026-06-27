@@ -1,8 +1,11 @@
-/* Responsive Design - Mobile First */
+/* ==========================================
+   RESPONSIVE DESIGN
+   Mobile First Approach
+   ========================================== */
 
-:root {
-  --mobile-padding: var(--spacing-lg);
-}
+/* ==========================================
+   BASE LAYOUT (MOBILE)
+   ========================================== */
 
 body {
   overflow-x: hidden;
@@ -11,7 +14,7 @@ body {
 .container {
   width: 100%;
   max-width: 100%;
-  padding: 0 var(--mobile-padding);
+  padding: 0 var(--spacing-lg);
   margin: 0 auto;
 }
 
@@ -42,31 +45,6 @@ body {
 .navbar-nav {
   display: none;
   list-style: none;
-  flex-direction: column;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: var(--bg-primary);
-  border-bottom: 1px solid var(--divider-color);
-}
-
-.navbar-nav li {
-  border-bottom: 1px solid var(--divider-color);
-}
-
-.navbar-nav a {
-  display: block;
-  padding: var(--spacing-md) var(--spacing-lg);
-  color: var(--text-primary);
-  text-decoration: none;
-  transition: color var(--transition-base);
-}
-
-.navbar-nav a:hover,
-.navbar-nav a.active {
-  color: var(--color-premium);
-  background-color: var(--bg-card);
 }
 
 .navbar-toggle {
@@ -93,11 +71,18 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-/* Search Box */
+/* ==========================================
+   SEARCH BOX (EXPLORE PAGE)
+   ========================================== */
+
 .search-box {
   display: flex;
   align-items: center;
@@ -129,7 +114,14 @@ body {
   color: var(--text-secondary);
 }
 
-/* Stock List */
+.search-input:focus {
+  outline: none;
+}
+
+/* ==========================================
+   STOCK LIST / TABLE
+   ========================================== */
+
 .stocks-container {
   display: flex;
   flex-direction: column;
@@ -186,7 +178,10 @@ body {
   color: var(--color-negative);
 }
 
-/* Charts */
+/* ==========================================
+   CHART STYLING
+   ========================================== */
+
 .chart-card {
   background-color: var(--bg-card);
   border-radius: var(--radius-md);
@@ -226,7 +221,55 @@ body {
   padding-top: var(--spacing-md);
 }
 
-/* Portfolio */
+/* ==========================================
+   NEWS CARDS
+   ========================================== */
+
+.news-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.news-cards {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.news-card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--divider-color);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.news-card:hover {
+  background-color: var(--bg-card-light);
+}
+
+.news-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.3;
+}
+
+.news-description {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.news-link {
+  font-size: 12px;
+  color: var(--color-premium);
+  text-decoration: none;
+}
+
+/* ==========================================
+   PORTFOLIO
+   ========================================== */
+
 .portfolio-summary {
   display: grid;
   gap: var(--spacing-md);
@@ -272,7 +315,35 @@ body {
   color: var(--text-secondary);
 }
 
-/* Premium Plans */
+.holding-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+/* ==========================================
+   FORMS
+   ========================================== */
+
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+}
+
+/* ==========================================
+   PREMIUM SCREEN
+   ========================================== */
+
 .premium-plans {
   display: grid;
   gap: var(--spacing-lg);
@@ -338,33 +409,35 @@ body {
   margin-right: var(--spacing-md);
 }
 
-/* Tablet (576px+) */
+/* ==========================================
+   TABLET (576px and up)
+   ========================================== */
+
 @media (min-width: 576px) {
   .container {
     padding: 0 var(--spacing-xl);
   }
 
   .navbar-nav {
-    display: flex !important;
-    position: static;
-    flex-direction: row;
-    background-color: transparent;
-    border: none;
+    display: flex;
     gap: var(--spacing-xl);
     flex: 1;
     justify-content: center;
   }
 
-  .navbar-nav li {
-    border: none;
+  .navbar-toggle {
+    display: none;
   }
 
   .navbar-nav a {
-    padding: var(--spacing-md) 0;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--transition-base);
   }
 
-  .navbar-toggle {
-    display: none;
+  .navbar-nav a:hover,
+  .navbar-nav a.active {
+    color: var(--color-premium);
   }
 
   .stock-row {
@@ -379,9 +452,22 @@ body {
   .chart-wrapper {
     height: 250px;
   }
+
+  .stocks-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .stock-row {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+  }
 }
 
-/* Desktop (992px+) */
+/* ==========================================
+   DESKTOP (992px and up)
+   ========================================== */
+
 @media (min-width: 992px) {
   .container {
     max-width: 1200px;
@@ -404,8 +490,18 @@ body {
     grid-template-columns: 80px 1fr 100px 100px;
   }
 
+  .stocks-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
   .premium-plans {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--spacing-2xl);
+  }
+
+  .news-cards {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 }

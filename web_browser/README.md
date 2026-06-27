@@ -40,7 +40,7 @@ A responsive web application for real-time stock tracking with portfolio managem
 ### Local Development
 
 ```bash
-cd web/
+cd web_browser/
 python3 -m http.server 8000
 # or: php -S localhost:8000
 ```
@@ -100,7 +100,7 @@ All colors and spacing follow the mobile app exactly:
 ## Deployment
 
 ### Option 1: Free Hosting (000webhost)
-1. Upload entire `web/` folder to hosting
+1. Upload entire `web_browser/` folder to hosting
 2. Set `index.html` as default file
 3. API calls use CORS (should work cross-origin)
 
