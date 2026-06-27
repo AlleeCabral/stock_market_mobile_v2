@@ -33,20 +33,20 @@
 
 ### Option 1: Python HTTP Server (Recommended for Testing)
 ```bash
-cd /home/runner/work/stock_market_mobile_v2/stock_market_mobile_v2/web
+cd /home/runner/work/stock_market_mobile_v2/stock_market_mobile_v2/web_browser
 python3 -m http.server 8000
 # Open http://localhost:8000 in browser
 ```
 
 ### Option 2: PHP Server
 ```bash
-cd /home/runner/work/stock_market_mobile_v2/stock_market_mobile_v2/web
+cd /home/runner/work/stock_market_mobile_v2/stock_market_mobile_v2/web_browser
 php -S localhost:8000
 ```
 
 ### Option 3: Simple Node Server
 ```bash
-cd /home/runner/work/stock_market_mobile_v2/stock_market_mobile_v2/web
+cd /home/runner/work/stock_market_mobile_v2/stock_market_mobile_v2/web_browser
 npx http-server -p 8000
 ```
 
@@ -251,7 +251,7 @@ npx http-server -p 8000
 5. Test on mobile devices
 
 ### Production Deployment
-See `/web/README.md` for deployment instructions to:
+See `/web_browser/README.md` for deployment instructions to:
 - 000webhost (free PHP hosting)
 - Heroku
 - Vercel (frontend-only)

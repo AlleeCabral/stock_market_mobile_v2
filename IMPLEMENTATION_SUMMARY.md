@@ -80,7 +80,7 @@ stock_market_mobile_v2/
 
 ### Quick Start
 ```bash
-cd web/
+cd web_browser/
 python3 -m http.server 8000
 # Open http://localhost:8000 in your browser
 ```
@@ -178,7 +178,7 @@ const MARKETSTACK_API_KEY = process.env.MARKETSTACK_API_KEY;
 ## 🚢 Deployment Options
 
 ### Option 1: Free Hosting (000webhost)
-1. Upload entire `web/` folder
+1. Upload entire `web_browser/` folder
 2. Set `index.html` as default
 3. Works immediately (no PHP setup needed)
 
@@ -192,7 +192,7 @@ const MARKETSTACK_API_KEY = process.env.MARKETSTACK_API_KEY;
 2. Fast CDN delivery
 3. Automatic HTTPS
 
-See `web/README.md` for detailed deployment instructions.
+See `web_browser/README.md` for detailed deployment instructions.
 
 ## ❓ Next Steps - What Would You Like?
 

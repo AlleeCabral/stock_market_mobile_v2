@@ -1,3 +1,10 @@
+/**
+ * ============================================
+ * HISTORY SERVICE
+ * Fetches historical price data for charts
+ * ============================================
+ */
+
 class HistoryService {
   constructor(apiKey) {
     this.apiKey = apiKey;
@@ -5,87 +12,143 @@ class HistoryService {
     this.cache = {};
   }
 
+  /**
+   * Calculate date range based on period
+   */
   getDateRange(period) {
     const now = new Date();
     const from = new Date();
 
-    switch(period) {
-      case '3M': from.setMonth(now.getMonth() - 3); break;
-      case '6M': from.setMonth(now.getMonth() - 6); break;
-      case '1Y': from.setFullYear(now.getFullYear() - 1); break;
+    switch (period) {
+      case '3M':
+        from.setMonth(now.getMonth() - 3);
+        break;
+      case '6M':
+        from.setMonth(now.getMonth() - 6);
+        break;
+      case '1Y':
+        from.setFullYear(now.getFullYear() - 1);
+        break;
+      default:
+        from.setFullYear(now.getFullYear() - 1);
     }
 
     return { from, to: now };
   }
 
+  /**
+   * Format date as YYYY-MM-DD
+   */
   formatDate(date) {
-    return date.toISOString().split('T')[0];
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
+  /**
+   * Fetch historical data for a symbol and period
+   */
   async fetchHistory(symbol, period = '1Y') {
     const cacheKey = `${symbol}_${period}`;
-    if (this.cache[cacheKey]) return this.cache[cacheKey];
+
+    // Return cached if available
+    if (this.cache[cacheKey]) {
+      return this.cache[cacheKey];
+    }
 
     try {
       const { from, to } = this.getDateRange(period);
+
       const params = new URLSearchParams({
         symbols: symbol,
         date_from: this.formatDate(from),
         date_to: this.formatDate(to),
         limit: '1000',
-        access_key: this.apiKey
+        access_key: this.apiKey,
       });
 
       const response = await fetch(`${this.baseUrl}/eod?${params}`);
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
       const data = await response.json();
 
-      if (data.data && Array.isArray(data.data)) {
-        const points = data.data
-          .map(item => ({
-            date: item.date,
-            close: parseFloat(item.close),
-            open: parseFloat(item.open),
-            high: parseFloat(item.high),
-            low: parseFloat(item.low)
-          }))
-          .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-        this.cache[cacheKey] = points;
-        return points;
+      if (!data.data || !Array.isArray(data.data)) {
+        throw new Error('Invalid API response');
       }
-    } catch (error) {
-      console.error('Error fetching history:', error);
-    }
 
-    return this.generateFixtureData(symbol, period);
+      // Parse historical data
+      const points = data.data
+        .map((item) => ({
+          date: item.date,
+          open: parseFloat(item.open) || 0,
+          high: parseFloat(item.high) || 0,
+          low: parseFloat(item.low) || 0,
+          close: parseFloat(item.close) || 0,
+          volume: parseInt(item.volume) || 0,
+        }))
+        .sort((a, b) => new Date(a.date) - new Date(b.date)); // oldest to newest
+
+      // Cache results
+      this.cache[cacheKey] = points;
+
+      return points;
+    } catch (error) {
+      console.error(
+        `Error fetching history for ${symbol} (${period}):`,
+        error
+      );
+      // Return generated fixture data
+      return this.generateFixtureData(period);
+    }
   }
 
-  generateFixtureData(symbol, period) {
-    const points = [];
+  /**
+   * Generate fixture data for fallback
+   */
+  generateFixtureData(period) {
     const { from, to } = this.getDateRange(period);
-    
-    let current = new Date(from);
-    let basePrice = 50 + Math.random() * 300;
+    const points = [];
+    const basePrice = 150;
+    const variance = 0.02; // 2% daily variance
 
-    while (current <= to) {
-      if (current.getDay() !== 0 && current.getDay() !== 6) { // Skip weekends
-        const variation = (Math.random() - 0.5) * 5;
-        const close = basePrice + variation;
+    let currentDate = new Date(from);
+    let currentPrice = basePrice;
+
+    while (currentDate < to) {
+      // Skip weekends
+      if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
+        const change = (Math.random() - 0.5) * variance * currentPrice;
+        currentPrice += change;
 
         points.push({
-          date: this.formatDate(current),
-          close: parseFloat(close.toFixed(2)),
-          open: parseFloat((close - (Math.random() - 0.5) * 2).toFixed(2)),
-          high: parseFloat((close + Math.random() * 2).toFixed(2)),
-          low: parseFloat((close - Math.random() * 2).toFixed(2))
+          date: this.formatDate(currentDate),
+          open: currentPrice * (1 - Math.random() * 0.01),
+          high: currentPrice * (1 + Math.random() * 0.02),
+          low: currentPrice * (1 - Math.random() * 0.02),
+          close: currentPrice,
+          volume: Math.floor(Math.random() * 50000000 + 10000000),
         });
-
-        basePrice = close;
       }
 
-      current.setDate(current.getDate() + 1);
+      currentDate.setDate(currentDate.getDate() + 1);
     }
 
     return points;
   }
+
+  /**
+   * Clear cache
+   */
+  clearCache() {
+    this.cache = {};
+  }
+}
+
+// Export for use
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = HistoryService;
 }

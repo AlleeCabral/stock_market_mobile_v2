@@ -2,6 +2,12 @@
 
 Flutter project for mobile app.
 
+## Project Layout
+
+- Open the repository root as the Flutter project.
+- The Flutter web target now uses the standard `/web` directory again.
+- The separate browser-only prototype was moved to `/web_browser`.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

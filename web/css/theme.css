@@ -129,11 +129,6 @@ button {
   font-weight: 600;
 }
 
-.btn-sm {
-  padding: var(--spacing-sm) var(--spacing-md);
-  font-size: 12px;
-}
-
 .btn-primary {
   background-color: var(--color-premium);
   color: white;
@@ -174,15 +169,6 @@ button {
 
 .btn-negative:hover {
   background-color: #e63847;
-}
-
-.btn-premium {
-  background-color: var(--color-premium);
-  color: white;
-}
-
-.btn-premium:hover {
-  background-color: #1e5ac0;
 }
 
 /* Period selector buttons */
